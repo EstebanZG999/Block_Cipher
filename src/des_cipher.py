@@ -29,7 +29,7 @@ def decrypt_des_ecb(ciphertext, key):
         raise ValueError("key debe tener 8 bytes")
     
     if len(ciphertext) == 0 or len(ciphertext) % 8 != 0:
-        raise ValueError
+        raise ValueError("ciphertext debe ser no vacio y multiplo de 8")
     
     cipher = DES.new(key, DES.MODE_ECB)
     
@@ -38,7 +38,7 @@ def decrypt_des_ecb(ciphertext, key):
     return pkcs7_unpad(padded_plain)
 
 
-"Prompt: Generame un bloque main para probar las funciones que he hecho en este archivo, para ver si todo funciona bien"
+"Prompt IA: Generame un bloque main para probar las funciones que he hecho en este archivo, para ver si todo funciona bien"
     
 if __name__ == "__main__":
     key = generate_des_key()
