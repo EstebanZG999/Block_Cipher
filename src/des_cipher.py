@@ -38,25 +38,28 @@ def decrypt_des_ecb(ciphertext, key):
     return pkcs7_unpad(padded_plain)
 
 
-"Prompt IA: Generame un bloque main para probar las funciones que he hecho en este archivo, para ver si todo funciona bien"
+# Prompt IA: Generame un bloque main para probar las funciones que he hecho en este archivo, para ver si todo funciona bien
     
 if __name__ == "__main__":
     key = generate_des_key()
-    mensajes = [
-        b"Hola DES",   # no multiplo de 8
-        b"12345678",   # multiplo exacto de 8
-        b""            # vacio (PKCS#7 agrega bloque completo)
-    ]
+    des_text = (
+        "The DES block cipher is a 16-round Feistel network with a block length of "
+        "64 bits and a key length of 56 bits. The same round function f is used "
+        "in each of the 16 rounds. The round function takes a 48-bit sub-key and, as "
+        "expected for a (balanced) Feistel network, a 32-bit input (namely, half a block). "
+        "The key schedule of DES is used to derive a sequence of 48-bit sub-keys k1, "
+        "... , k16 from the 56-bit master key."
+    ).encode("utf-8")
 
-    for msg in mensajes:
-        ciphertext = encrypt_des_ecb(msg, key)
-        recovered = decrypt_des_ecb(ciphertext, key)
+    ciphertext = encrypt_des_ecb(des_text, key)
+    recovered = decrypt_des_ecb(ciphertext, key)
 
-        print(f"Mensaje original: {msg}")
-        print(f"Ciphertext (hex): {ciphertext.hex()}")
-        print(f"Recuperado: {recovered}")
-        print(f"Coincide: {recovered == msg}")
-        print("-" * 40)
+    print("=== Prueba DES-ECB con texto del laboratorio ===")
+    print(f"Longitud plaintext: {len(des_text)} bytes")
+    print(f"Longitud ciphertext: {len(ciphertext)} bytes")
+    print(f"Ciphertext (hex, primeros 64): {ciphertext.hex()[:64]}...")
+    print(f"Coincide: {recovered == des_text}")
+    print("-" * 40)
 
     # prueba de error esperado (ciphertext invalido)
     try:

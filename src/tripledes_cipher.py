@@ -59,41 +59,38 @@ def decrypt_3des_cbc(ciphertext: bytes, key: bytes, iv: bytes) -> bytes:
 if __name__ == "__main__":
     from src.utils import generate_3des_key, generate_iv
 
-    mensajes = [
-        b"Mensaje 3DES corto",
-        b"12345678",  # multiplo exacto de 8
-        b""           # vacio
-    ]
+    tripledes_text = (
+        "The main weakness of DES is its short key. It thus makes sense to try to "
+        "design a block cipher with a larger key length using DES as a building block. "
+        "Some approaches to doing so are discussed in this section. Although we refer "
+        "to DES frequently throughout the discussion, and DES is the most prominent "
+        "block cipher to which these techniques have been applied, everything we say "
+        "here applies generically to any block cipher."
+    ).encode("utf-8")
 
     print("=== Prueba 3DES-CBC con clave de 16 bytes (2-key) ===")
     key_2k = generate_3des_key(2)
-
-    for msg in mensajes:
-        iv = generate_iv(8)  # IV nuevo por mensaje
-        ct = encrypt_3des_cbc(msg, key_2k, iv)
-        pt = decrypt_3des_cbc(ct, key_2k, iv)
-
-        print(f"Mensaje original: {msg}")
-        print(f"IV (hex): {iv.hex()}")
-        print(f"Ciphertext (hex): {ct.hex()}")
-        print(f"Recuperado: {pt}")
-        print(f"Coincide: {pt == msg}")
-        print("-" * 50)
+    iv_2k = generate_iv(8)  # IV nuevo por mensaje
+    ct_2k = encrypt_3des_cbc(tripledes_text, key_2k, iv_2k)
+    pt_2k = decrypt_3des_cbc(ct_2k, key_2k, iv_2k)
+    print(f"Longitud plaintext: {len(tripledes_text)} bytes")
+    print(f"Longitud ciphertext: {len(ct_2k)} bytes")
+    print(f"IV (hex): {iv_2k.hex()}")
+    print(f"Ciphertext (hex, primeros 64): {ct_2k.hex()[:64]}...")
+    print(f"Coincide: {pt_2k == tripledes_text}")
+    print("-" * 50)
 
     print("\n=== Prueba 3DES-CBC con clave de 24 bytes (3-key) ===")
     key_3k = generate_3des_key(3)
-
-    for msg in mensajes:
-        iv = generate_iv(8)  # IV nuevo por mensaje
-        ct = encrypt_3des_cbc(msg, key_3k, iv)
-        pt = decrypt_3des_cbc(ct, key_3k, iv)
-
-        print(f"Mensaje original: {msg}")
-        print(f"IV (hex): {iv.hex()}")
-        print(f"Ciphertext (hex): {ct.hex()}")
-        print(f"Recuperado: {pt}")
-        print(f"Coincide: {pt == msg}")
-        print("-" * 50)
+    iv_3k = generate_iv(8)  # IV nuevo por mensaje
+    ct_3k = encrypt_3des_cbc(tripledes_text, key_3k, iv_3k)
+    pt_3k = decrypt_3des_cbc(ct_3k, key_3k, iv_3k)
+    print(f"Longitud plaintext: {len(tripledes_text)} bytes")
+    print(f"Longitud ciphertext: {len(ct_3k)} bytes")
+    print(f"IV (hex): {iv_3k.hex()}")
+    print(f"Ciphertext (hex, primeros 64): {ct_3k.hex()[:64]}...")
+    print(f"Coincide: {pt_3k == tripledes_text}")
+    print("-" * 50)
 
     # Caso de error esperado: ciphertext no multiplo de 8
     try:
