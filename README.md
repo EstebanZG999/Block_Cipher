@@ -67,10 +67,6 @@ Archivo: `src/des_cipher.py`
 
 Ejecucion:
 
-```powershell
-python -m src.des_cipher
-```
-
 Incluye:
 - Generacion segura de clave DES (8 bytes)
 - Padding PKCS#7 manual (reutilizado desde avances)
@@ -81,12 +77,6 @@ Incluye:
 
 Archivo: `src/tripledes_cipher.py`
 
-Ejecucion:
-
-```powershell
-python -m src.tripledes_cipher
-```
-
 Incluye:
 - Claves 3DES de 16 bytes (2-key) y 24 bytes (3-key)
 - IV aleatorio por operacion
@@ -96,15 +86,22 @@ Incluye:
 Diferencia 3DES 2-key vs 3-key
 En 3DES se aplica el algoritmo DES tres veces bajo el esquema Encrypt–Decrypt–Encrypt (EDE). Cuando se utilizan 16 bytes (2 claves), en esta configuración se usan dos claves independientes K1 y K2, lo cual hace que la tercera clave sea igual a la primera (K3 = K1), lo que se conoce como 2TDEA. Cuando se utilizan 24 bytes (3 claves), se utilizan tres claves diferentes e independientes una de otra K1, K2 y K3, conocido como 3TDEA. Aunque en teoría usar 3 claves parece ofrecer 168 bits de seguridad (3 × 56 bits), en la práctica la seguridad efectiva es de aproximadamente 112 bits debido a ataques como meet-in-the-middle. La principal diferencia entre ambas configuraciones es que la versión de 3 claves evita reutilizar K1 como K3. 
 
+Manejo de IV en 3DES-CBC
+En CBC, el IV debe ser único/aleatorio por mensaje.  
+Para transmitir el resultado de cifrado, se recomienda concatenar el IV al inicio del ciphertext:
+
+- Formato: `payload = IV || CIPHERTEXT`
+- Tamaño IV 3DES-CBC: 8 bytes
+
+En el receptor:
+1. Leer los primeros 8 bytes como `iv`.
+2. Tomar el resto como `ciphertext`.
+3. Ejecutar `decrypt_3des_cbc(ciphertext, key, iv)`.
+
+
 ### 3.3 Seccion 1.3 - AES en ECB y CBC (analisis visual)
 
 Archivo: `src/aes_cipher.py`
-
-Ejecucion:
-
-```powershell
-python -m src.aes_cipher
-```
 
 Incluye:
 - AES-256 (clave de 32 bytes)
@@ -117,6 +114,12 @@ Incluye:
   - `images/ejercicio_1.3/output/imagen_tux_ecb.png`
   - `images/ejercicio_1.3/output/imagen_tux_cbc.png`
 
+
+Ejecucion de la parte 1:
+
+```powershell
+python -m tests.demo_outputs
+```
 ---
 
 ## 4. Parte 2 - Preguntas de analisis (fundamentadas)
