@@ -11,6 +11,7 @@ def png_to_ppm(input_png: str, output_ppm: str) -> None:
 
         img_rgb.save(output_ppm, format="PPM")
 
+# Prompt: Dame una funcion que lea las fotos ppm
 def read_ppm_header_and_pixels(ppm_path: str) -> tuple[bytes, bytes]:
     """
     Lee un archivo PPM (P6), valida header y retorna:
