@@ -2,7 +2,6 @@ from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad
 from PIL import Image
 from pathlib import Path
-from src.utils import generate_aes_key, generate_iv
 
 def png_to_ppm(input_png: str, output_ppm: str) -> None:
 
@@ -12,8 +11,6 @@ def png_to_ppm(input_png: str, output_ppm: str) -> None:
 
         img_rgb.save(output_ppm, format="PPM")
 
-
-# Promt: Dame un codigo que convierta imagenes en png en ppm
 def read_ppm_header_and_pixels(ppm_path: str) -> tuple[bytes, bytes]:
     """
     Lee un archivo PPM (P6), valida header y retorna:
@@ -184,49 +181,3 @@ def write_ppm(output_path: str, header: bytes, pixel_data: bytes) -> None:
 
     Path(output_path).parent.mkdir(parents=True, exist_ok=True)
     Path(output_path).write_bytes(header + pixel_data)
-
-
-
-
-# Prompt IA: Generame un bloque main para probar las funciones que he hecho en este archivo, para ver si todo funciona bien
-
-if __name__ == "__main__":
-    # Ajusta estas rutas segun tu estructura real
-    png_input = "images/ejercicio_1.3/input/pic_aes.png"
-    ppm_input = "images/ejercicio_1.3/input/tux.ppm"
-    ppm_ecb_out = "images/ejercicio_1.3/output/imagen_tux_ecb.ppm"
-    ppm_cbc_out = "images/ejercicio_1.3/output/imagen_tux_cbc.ppm"
-    png_ecb_out = "images/ejercicio_1.3/output/imagen_tux_ecb.png"
-    png_cbc_out = "images/ejercicio_1.3/output/imagen_tux_cbc.png"
-
-    # 1) Convertir PNG -> PPM (P6)
-    #png_to_ppm(png_input, ppm_input)
-
-    # 2) Leer header + pixeles
-    header, pixels = read_ppm_header_and_pixels(ppm_input)
-
-    # 3) Generar clave AES-256 e IV para CBC
-    key = generate_aes_key(256)  # 32 bytes
-    iv = generate_iv(16)         # AES block size
-
-    # 4) Cifrar solo pixeles (header intacto)
-    pixels_ecb = encrypt_ecb(pixels, key)
-    pixels_cbc = encrypt_cbc(pixels, key, iv)
-
-    # 5) Guardar resultados PPM
-    write_ppm(ppm_ecb_out, header, pixels_ecb)
-    write_ppm(ppm_cbc_out, header, pixels_cbc)
-
-    # 6) Convertir outputs PPM -> PNG para visualizacion
-    Image.open(ppm_ecb_out).save(png_ecb_out, format="PNG")
-    Image.open(ppm_cbc_out).save(png_cbc_out, format="PNG")
-
-    print("Proceso completado.")
-    print(f"KEY (hex): {key.hex()}")
-    print(f"IV  (hex): {iv.hex()}")
-    print(f"Entrada PNG: {png_input}")
-    print(f"PPM base:    {ppm_input}")
-    print(f"Salida ECB PPM: {ppm_ecb_out}")
-    print(f"Salida CBC PPM: {ppm_cbc_out}")
-    print(f"Salida ECB PNG: {png_ecb_out}")
-    print(f"Salida CBC PNG: {png_cbc_out}")
