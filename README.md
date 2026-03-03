@@ -206,6 +206,19 @@ En esta práctica se implementó DES en modo ECB, 3DES en modo CBC, y AES tanto 
   </tr>
 </table>
 
+<table>
+  <tr>
+    <th>Original</th>
+    <th>AES-ECB</th>
+    <th>AES-CBC</th>
+  </tr>
+  <tr>
+    <td><img src="images/ejercicio_1.3/input/bill.png" width="260"></td>
+    <td><img src="images/ejercicio_1.3/output/bill_ecb.png" width="260"></td>
+    <td><img src="images/ejercicio_1.3/output/bill_cbc.png" width="260"></td>
+  </tr>
+</table>
+
 Sí. En ECB, se preservan patrones/contornos.
 En CBC, la imagen cifrada parece ruido, sin patrones visibles.
 
@@ -431,6 +444,19 @@ ECB filtra informacion estructural; CBC evita esa fuga visual gracias al encaden
     <td><img src="images/ejercicio_1.3/input/tux.png" width="260"></td>
     <td><img src="images/ejercicio_1.3/output/imagen_tux_ecb.png" width="260"></td>
     <td><img src="images/ejercicio_1.3/output/imagen_tux_cbc.png" width="260"></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <th>Original</th>
+    <th>AES-ECB</th>
+    <th>AES-CBC</th>
+  </tr>
+  <tr>
+    <td><img src="images/ejercicio_1.3/input/bill.png" width="260"></td>
+    <td><img src="images/ejercicio_1.3/output/bill_ecb.png" width="260"></td>
+    <td><img src="images/ejercicio_1.3/output/bill_cbc.png" width="260"></td>
   </tr>
 </table>
 ---
